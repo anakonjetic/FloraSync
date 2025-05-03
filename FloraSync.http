@@ -1,0 +1,6 @@
+@FloraSync_HostAddress = http://localhost:5202
+
+GET {{FloraSync_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
