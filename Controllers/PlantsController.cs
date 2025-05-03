@@ -23,6 +23,27 @@ namespace FloraSync.Controllers
             return plant == null ? NotFound() : Ok(ToDto(plant));
         }
 
+        [HttpGet("image/{fileName}")]
+        public IActionResult GetImage(string fileName)
+        {
+            var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            var filePath = Path.Combine(uploadsDir, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound("Image not found.");
+
+            var extension = Path.GetExtension(filePath).Trim('.').ToLowerInvariant();
+            var mimeType = extension switch
+            {
+                "png" => "image/png",
+                "jpg" or "jpeg" => "image/jpeg",
+                "gif" => "image/gif",
+                _ => "application/octet-stream"
+            };
+
+            return PhysicalFile(filePath, mimeType);
+        }
+
 
 
         private static PlantDto ToDto(Plant p) => new()
