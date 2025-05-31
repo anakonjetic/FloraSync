@@ -44,6 +44,29 @@ namespace FloraSync.Controllers
             return PhysicalFile(filePath, mimeType);
         }
 
+        [HttpGet("paged")]
+        public async Task<ActionResult<PagedResult<PlantDto>>> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            if (page <= 0 || pageSize <= 0)
+                return BadRequest("Invalid page or pageSize");
+
+            var totalItems = await _context.Plants.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            var items = await _context.Plants
+                .OrderBy(p => p.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new PagedResult<PlantDto>
+            {
+                Items = items.Select(ToDto),
+                CurrentPage = page,
+                TotalPages = totalPages
+            });
+        }
+
 
 
         private static PlantDto ToDto(Plant p) => new()

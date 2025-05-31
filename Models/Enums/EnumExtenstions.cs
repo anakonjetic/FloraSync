@@ -16,10 +16,10 @@ namespace FloraSync.Models.Enums
         public static string ToConstant(this WateringFrequency e) => e.ToString();
         public static string ToIcon(this WateringFrequency e) => e switch
         {
-            WateringFrequency.Rare => "🗓️",
+            WateringFrequency.Rare => "🥀",
             WateringFrequency.Occasional => "📆",
-            WateringFrequency.Regular => "🧴",
-            WateringFrequency.Frequent => "💧",
+            WateringFrequency.Regular => "💧",
+            WateringFrequency.Frequent => "🚿",
             WateringFrequency.Constant => "🌊",
             _ => "❔"
         };
